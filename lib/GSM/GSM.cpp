@@ -197,7 +197,7 @@ void loopGSM() {
 
             SerialMon.println("Making POST request securely");
             String contentType = "Content-Type: application/json";
-            String postData = "{\"recordedAt\":\"" + Time + "\", \"light\" :\"" + light_str + "\", \"uvIntensity\" :\"" + uv_str + "\", \"windDirection\" :\"" + winddir_str + "\", \"windSpeed\" :\""+winds_str+"\", \"precipitation\" :\""+rain_str+"\", \"T1\":\"" + t_str[0] + " \", \"T2\":\"" + t_str[1] + " \", \"T3\":\"" + t_str[2] + " \", \"H1\":\"" + h_str[0] + " \", \"H2\":\"" + h_str[1] + " \", \"H3\":\"" + h_str[2] + " \", \"P1\":\"" + p_str[0] + " \", \"P2\":\"" + p_str[1] + " \", \"P3\":\"" + p_str[2] + "\",\"batteryVoltage\" :\"" + volt_str + "\"}";
+            String postData = "{\"recordedAt\":\"" + Time + "\", \"light\" :\"" + light_str + "\", \"uvIntensity\" :\"" + uv_str + "\", \"windDirection\" :\"" + winddir_str + "\", \"windSpeed\" :\""+winds_str+"\", \"precipitation\" :\""+rain_str+"\", \"T1\":\"" + t_str[0] + "\", \"T2\":\"" + t_str[1] + "\", \"T3\":\"" + t_str[2] + "\", \"H1\":\"" + h_str[0] + "\", \"H2\":\"" + h_str[1] + "\", \"H3\":\"" + h_str[2] + "\", \"P1\":\"" + p_str[0] + "\", \"P2\":\"" + p_str[1] + "\", \"P3\":\"" + p_str[2] + "\",\"batteryVoltage\" :\"" + volt_str + "\"}";
 
 
 
