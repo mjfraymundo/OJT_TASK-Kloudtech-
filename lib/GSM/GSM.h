@@ -10,6 +10,7 @@
 #include <TinyGsmClient.h>
 #include <ArduinoHttpClient.h>
 #include "SSLClient.h"
+#include <esp_sleep.h>  // Include the ESP32 sleep library
 
 // GSM Serial Monitor
 extern HardwareSerial SerialAT;

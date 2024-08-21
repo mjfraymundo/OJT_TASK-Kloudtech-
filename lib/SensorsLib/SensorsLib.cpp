@@ -255,7 +255,7 @@ void INA219Sensor() {
 
 //============================================== General sensor check ==============================================
 void checkSensors() {
-    SerialMon.println("\n========================================GSM Initializing========================================");
+    SerialMon.println("\n======================================== General sensor check ========================================");
     
     setupLightSensor();  // Initialize and read light sensor
     delay(10);
