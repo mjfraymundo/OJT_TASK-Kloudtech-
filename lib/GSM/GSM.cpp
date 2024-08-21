@@ -1,5 +1,6 @@
 #include "GSM.h"
 #include "SensorsLib.h"
+#include "SlaveLib.h"
 #include <TinyGsmClient.h>
 #include <SSLClient.h>
 #include <Wire.h>
@@ -163,8 +164,10 @@ void loopGSM() {
             SerialMon.println("P2 = " + p_str[1]);
             SerialMon.println("P3 = " + p_str[2]);
             SerialMon.println("Light Intensity = " + light_str);
-            SerialMon.println("Irradiance = " + irradiance_str);
             SerialMon.println("Wind Direction = " + winddir_str);
+            SerialMon.println("Wind Direction = " + volt_str);
+            SerialMon.println("Wind Direction = " + rain_str);
+            SerialMon.println("Wind Direction = " + winds_str);
 
             SerialMon.println("\n========================================RTC Initializing========================================");
             SerialMon.print("Connecting to RTC...");
@@ -190,7 +193,7 @@ void loopGSM() {
 
             SerialMon.println("Making POST request securely");
             String contentType = "Content-Type: application/json";
-            String postData = "{\"recordedAt\":\" " + Time + "\", \"light\":\" " + light_str + "\", \"windDirection\":\" " + winddir_str + "\", \"T1\":\" " + t_str[0] + " \", \"T2\":\" " + t_str[1] + " \", \"T3\":\" " + t_str[2] + " \", \"H1\":\" " + h_str[0] + " \", \"H2\":\" " + h_str[1] + " \", \"H3\":\" " + h_str[2] + " \", \"P1\":\" " + p_str[0] + " \", \"P2\":\" " + p_str[1] + " \", \"P3\":\" " + p_str[2] + "\"}";
+            String postData = "{\"recordedAt\":\" " + Time + "\", \"light\" :\"" + light_str + "\", \"uvIntensity\" :\"" + uv_str + "\", \"windDirection\" :\"" + winddir_str + "\", \"windSpeed\" :\""+winds_str+"\", \"precipitation\" :\""+rain_str+"\",            \"T1\":\"" + t_str[0] + " \", \"T2\":\"" + t_str[1] + " \", \"T3\":\"" + t_str[2] + " \", \"H1\":\" " + h_str[0] + " \", \"H2\":\" " + h_str[1] + " \", \"H3\":\" " + h_str[2] + " \", \"P1\":\" " + p_str[0] + " \", \"P2\":\" " + p_str[1] + " \", \"P3\":\" " + p_str[2] + "\",\"batteryVoltage\" :\"" + volt_str + "\"}";
 
 
 

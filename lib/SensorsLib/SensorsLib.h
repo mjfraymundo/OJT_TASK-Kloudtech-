@@ -5,6 +5,7 @@
 #include <BH1750.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include <Adafruit_INA219.h> // Add INA219 library
 
 //=============================================== WindDirection ===============================================
 extern const byte SENSOR_ADDRESS;
@@ -30,7 +31,6 @@ void checkWindDirectionSensor();
 //=============================================== LightSensor ===============================================
 extern BH1750 lightMeter;
 extern String light_str;
-extern String irradiance_str;
 
 void setupLightSensor();
 void Light();
@@ -52,11 +52,25 @@ void printValues(Adafruit_BME280& bme, const char* name, int bus, bool detected)
 void BME();
 
 //=============================================== UV Sensor ===============================================
-extern const int uvSensorPin;
+extern String uv_str; // String to store UV intensity
 
-float mapVoltageToUVIndex(float voltage);
+// UV Variables
+extern float sensorVoltage;
+extern float sensorValue;
+extern float UV_intensity;
+
+void getUV();  // Function to read and calculate UV intensity
 void UV();
 void checkUVSensor();
+
+//=============================================== INA219 ===============================================
+extern Adafruit_INA219 ina219;
+extern float busvoltage;
+extern String volt_str;
+
+void setupINA219();
+void getINA();
+void INA219Sensor();
 
 //============================================== General sensor check ==============================================
 void checkSensors();

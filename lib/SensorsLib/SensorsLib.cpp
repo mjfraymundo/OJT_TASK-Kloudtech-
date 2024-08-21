@@ -94,9 +94,7 @@ BH1750 lightMeter;
 
 // Variables to store light sensor values
 String light_str;
-String irradiance_str;
 float lux = 0;
-float irradiance = 0;
 
 // Initialize and read light sensor
 void setupLightSensor() {
@@ -105,27 +103,22 @@ void setupLightSensor() {
     if (!light_status) {
         SerialMon.println(" Failed");
         light_str = "";
-        irradiance_str = "";
     } else {
         SerialMon.println(" OK");
         getLight();  // Read sensor values
         light_str = String(lux);
-        irradiance_str = String(irradiance);
     }
 }
 
 void getLight() {
     lux = lightMeter.readLightLevel();
-    irradiance = lux / 683;  // Convert lux to irradiance
 }
 
 void Light() {
     getLight();
     SerialMon.print("Light: ");
     SerialMon.print(lux);
-    SerialMon.print(" lx, Irradiance: ");
-    SerialMon.print(irradiance);
-    SerialMon.println(" W/m^2");
+    SerialMon.println(" lx");
 }
 
 //=============================================== BME Multiplexer ===============================================
@@ -199,36 +192,31 @@ void printValues(Adafruit_BME280& bme, const char* name, int bus, bool detected)
 }
 
 //=============================================== UV Sensor ===============================================
-const int uvSensorPin = 34;
+String uv_str;
 
-float mapVoltageToUVIndex(float voltage) {
-    if (voltage < 0.99) return 0;
-    else if (voltage < 1.38) return 1;
-    else if (voltage < 1.58) return 2;
-    else if (voltage < 1.79) return 3;
-    else if (voltage < 2.00) return 4;
-    else if (voltage < 2.20) return 5;
-    else if (voltage < 2.40) return 6;
-    else if (voltage < 2.60) return 7;
-    else if (voltage < 2.80) return 8;
-    else if (voltage < 3.00) return 9;
-    else return 10;
+// UV Variables
+float sensorVoltage = 0;
+float sensorValue = 0;
+float UV_intensity = 0;
+
+// UV Parameters
+void getUV() {
+  sensorValue = analogRead(32);  // Reading the analog value from pin 32
+  sensorVoltage = sensorValue / 4095.0 * 3.3;  // Converting the sensor value to voltage
+  UV_intensity = sensorVoltage * 1000;  // Calculating UV intensity
 }
 
-// Read UV sensor value
+// UV
 void UV() {
-    int uvLevel = analogRead(uvSensorPin);
-    float voltage = uvLevel * (3.3 / 4095.0);
-    float uvIndex = mapVoltageToUVIndex(voltage);
-    SerialMon.print("UV Index = ");
-    SerialMon.print(uvIndex);
-    SerialMon.print(" (Raw: ");
-    SerialMon.print(uvLevel);
-    SerialMon.println(")");
+    getUV();  // Calls the function to get the UV intensity
+    uv_str = String(UV_intensity);  // Converts the UV intensity to a string for display
+    SerialMon.print("UV Intensity = ");
+    SerialMon.print(uv_str);
+    SerialMon.println(" mV");
 }
 
 void checkUVSensor() {
-    int uvLevel = analogRead(uvSensorPin);
+    int uvLevel = analogRead(32);
     if (uvLevel > 0) {
         SerialMon.println("UV Sensor OK");
     } else {
@@ -236,8 +224,39 @@ void checkUVSensor() {
     }
 }
 
+//=============================================== INA219 ===============================================
+Adafruit_INA219 ina219;
+float busvoltage = 0;
+String volt_str;
+
+void setupINA219() {
+    SerialMon.print("Voltage Meter: ");
+    bool ina_status = ina219.begin();
+    if (!ina_status) {
+        SerialMon.println("Failed");
+        volt_str = "";
+    } else {
+        SerialMon.println("OK");
+        getINA();
+        volt_str = String(busvoltage);
+    }
+}
+
+void getINA() {
+    busvoltage = ina219.getBusVoltage_V();
+}
+
+void INA219Sensor() {
+    getINA();
+    SerialMon.print("Bus Voltage: ");
+    SerialMon.print(busvoltage);
+    SerialMon.println(" V");
+}
+
 //============================================== General sensor check ==============================================
 void checkSensors() {
+    SerialMon.println("\n========================================GSM Initializing========================================");
+    
     setupLightSensor();  // Initialize and read light sensor
     delay(10);
 
@@ -248,5 +267,8 @@ void checkSensors() {
     delay(10);
 
     setupWindDirection();  // Initialize and check wind direction sensor
+    delay(10);
+
+    setupINA219();  // Initialize and check INA219 sensor
     delay(10);
 }
